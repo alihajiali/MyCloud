@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
+
 {% block content %}
+
+
 <form id="add_directory" style="text-align: center; margin-top: 10%; display: none;" action="{% url 'file:new_directory' %}" method="post">
     {% csrf_token %}
     <label for="name"></label>
@@ -11,7 +14,6 @@
 </form>
 
 
-
 <div id="direcory_list" class="container mt-3">
     <div class="row">
         {% for folder in directory %}
@@ -20,19 +22,17 @@
           <button style="font-size:24px; margin: 1% 3%;"><i onclick="open_settings('{{ folder.id }}')" class="material-icons" style="color: black;">settings</i> <a style="color: black; " href="{% url 'file:directory' folder.id %}">{{ folder.name }}</a> <i class="fa fa-folder-open-o"></i>
           <ul style="display: none; list-style: none;" id="{{ folder.id }}">
             <li class="btn btn-danger" onclick="close_settings('{{ folder.id }}')"><i class="fa fa-close"></i></li><br>
-            <li class="btn btn-danger">حذف</li><br>
-            <li class="btn btn-warning">تغییر نام</li><br>
-            <li class="btn btn-primary">اشتراک گذاری</li><br>
-            <li class="btn btn-success">فشرده و دانلود</li>
+            <a href="{% url 'file:delete_manage' 'delete_directory' folder.id %}"><li class="btn btn-danger" >حذف</li></a><br>
+            <a href="{% url 'file:edit_manage' 'edit_directory' folder.id %}"><li class="btn btn-warning">تغییر نام</li></a><br>
+            <a href="{% url 'file:share_manage' 'share_directory' folder.id %}"><li class="btn btn-primary">اشتراک گذاری</li></a><br>
           </ul></button>
           {% else %}
           <button style="font-size:24px; margin: 1% 3%;"><i onclick="open_settings('{{ folder.id }}')" class="material-icons" style="color: black;">settings</i> <a style="color: black; " href="{% url 'file:directory' folder.id %}">{{ folder.name }}</a> <i class="fa fa-folder-open"></i>
           <ul style="display: none; list-style: none;" id="{{ folder.id }}">
             <li class="btn btn-danger" onclick="close_settings('{{ folder.id }}')"><i class="fa fa-close"></i></li><br>
-            <li class="btn btn-danger">حذف</li><br>
-            <li class="btn btn-warning">تغییر نام</li><br>
-            <li class="btn btn-primary">اشتراک گذاری</li><br>
-            <li class="btn btn-success">فشرده و دانلود</li>
+            <a href="{% url 'file:delete_manage' 'delete_directory' folder.id %}"><li class="btn btn-danger" >حذف</li></a><br>
+            <a href="{% url 'file:edit_manage' 'edit_directory' folder.id %}"><li class="btn btn-warning">تغییر نام</li></a><br>
+            <a href="{% url 'file:share_manage' 'share_directory' folder.id %}"><li class="btn btn-primary">اشتراک گذاری</li></a><br>
           </ul></button>
           {% endif %}
         </div>

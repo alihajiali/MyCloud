@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if "delete" in type %}
+<form id="add_directory" style="text-align: center; margin-top: 10%;" action="{% url 'file:delete_manage' %}" method="post">
+    {% csrf_token %}
+    <label for="text">آیا از حذف مطمئنید ؟</label>
+    <input type="hidden" name="type" value="{{ type }}">
+    <input type="hidden" name="id" value="{{ id }}">
+    <a style="width: 3%;" class="btn btn-danger" href="/"><i class="fa fa-close"></i></a>
+    <button style="width: 3%;" type="submit" class="btn btn-success"><i class="fa fa-check"></i></button>
+</form>
+{% elif "edit" in type %}
+<form id="add_directory" style="text-align: center; margin-top: 10%;" action="{% url 'file:edit_manage' %}" method="post">
+    {% csrf_token %}
+    <label for="name">name</label><br>
+    <input style="text-align: center;" type="text" name="name" placeholder="name"><br><br>
+    <input type="hidden" name="type" value="{{ type }}">
+    <input type="hidden" name="id" value="{{ id }}">
+    <a style="width: 3%;" class="btn btn-danger" href="/"><i class="fa fa-close"></i></a>
+    <button style="width: 3%;" type="submit" class="btn btn-success"><i class="fa fa-check"></i></button>
+</form>
+{% elif "share" in type %}
+<form id="add_directory" style="text-align: center; margin-top: 10%;" action="{% url 'file:share_manage' %}" method="post">
+    {% csrf_token %}
+    <label for="name">username</label><br>
+    <input style="text-align: center;" type="text" name="username" placeholder="username"><br><br>
+    <input type="hidden" name="type" value="{{ type }}">
+    <input type="hidden" name="id" value="{{ id }}">
+    <a style="width: 3%;" class="btn btn-danger" href="/"><i class="fa fa-close"></i></a>
+    <button style="width: 3%;" type="submit" class="btn btn-success"><i class="fa fa-check"></i></button>
+</form>
+{% endif %}
+
+{% endblock %}
