@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+      <form style="text-align: center; margin-top: 6%"action="{% url 'account:register' %}"method="post">
+        {% csrf_token %}
+        <label style="font-size: 2rem" for="text">register form</label><br/><br>
+
+        <div class="container">
+            <div class="row">
+              <div class="col-sm">
+                <label for="text">username</label>
+              </div>
+              <div class="col-sm">
+                <label for="text">email</label><br>
+              </div>
+            </div>
+          </div>
+        <input style="text-align: center; width: 42%;" type="text" name="username" placeholder="username" >
+        <input style="text-align: center; width: 42%;" type="email" name="email" placeholder="email" /><br/><br/>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-sm">
+              <label for="text">password again</label>
+            </div>
+            <div class="col-sm">
+              <label for="text">password</label><br>
+            </div>
+          </div>
+        </div>
+          <input style="text-align: center; width: 42%;" type="password" name="password_again" placeholder="password again"/>
+          <input style="text-align: center; width: 42%;" type="password" name="password" placeholder="password" /><br/><br>
+
+          <div class="container">
+            <div class="row">
+              <div class="col-sm">
+                <label for="text">last name</label>
+              </div>
+              <div class="col-sm">
+                <label for="text">first name</label><br>
+              </div>
+            </div>
+          </div>
+          <input style="text-align: center; width: 42%;" type="text" name="last_name" placeholder="last name"/>
+          <input style="text-align: center; width: 42%;" type="text" name="first_name" placeholder="first name" /><br/><br/>
+
+          <a style="width: 42%;" class="btn btn-danger" href="/">cancle</a>
+          <button style="width: 42%;" type="submit" class="btn btn-success">send</button>
+      </form>
+    </body>
+
+    {% endblock %}

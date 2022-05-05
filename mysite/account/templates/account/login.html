@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+      <form style="text-align: center; margin-top: 6%"action="{% url 'account:login' %}"method="post">
+        {% csrf_token %}
+        <label style="font-size: 2rem" for="text">lofin form</label><br/><br>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                        <label for="text">username or email</label>
+                    </div>
+                    <div class="col-sm">
+                        <label for="text">password</label><br>
+                    </div>
+                </div>
+            </div>
+            <input style="text-align: center; width: 42%;" type="text" name="username_or_email" placeholder="username or email" >
+            <input style="text-align: center; width: 42%;" type="password" name="password" placeholder="password" /><br/><br>
+
+            <a style="width: 42%;" class="btn btn-danger" href="/">cancle</a>
+            <button style="width: 42%;" type="submit" class="btn btn-success">send</button>
+      </form>
+    </body>
+
+    {% endblock %}
