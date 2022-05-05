@@ -1,18 +1,21 @@
+from msilib.schema import Directory
 from urllib import request
 from django.shortcuts import redirect, render, HttpResponse
 from django.views import View
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
-from httplib2 import Authentication
 from .models import *
+from file.models import *
 
 
 class Home(View):
     def get(self, request):
         if request.user.is_authenticated:
-            return render(request, "file/main.html")
+            user = User.objects.get(username=request.user)
+            directory = DirectoryModel.objects.filter(user=user).filter(parent=None)
+            return render(request, "file/main.html", context={"user": request.user, "directory_id": 0, "directory":directory})
         else:
-            return render(request, 'account/home.html', context={"user": request.user})
+            return render(request, 'account/home.html')
 
 
 class Register(View):

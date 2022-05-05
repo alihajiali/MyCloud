@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class Directory(models.Model):
+class DirectoryModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=280)
     parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
+    size = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -13,7 +14,7 @@ class Directory(models.Model):
 class File(models.Model):
     name = models.CharField(max_length=280, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    directory = models.ForeignKey(Directory, on_delete=models.CASCADE, null=True, blank=True)
+    directory = models.ForeignKey(DirectoryModel, on_delete=models.CASCADE, null=True, blank=True)
     file = models.FileField(upload_to=f"file/")
 
     def __str__(self):
