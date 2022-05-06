@@ -14,6 +14,16 @@
 </form>
 
 
+<form id="create_file" style="text-align: center; margin-top: 10%; display: none;" action="{% url 'file:create_file' %}" method="post">
+  {% csrf_token %}
+  <input type="hidden", name="directory_id" value="{{ directory_id }}">
+  <input type="file" name="file" id="file" multiple style="display:none;"/>
+  <label for="file"><span class="btn btn-secondary" style="font-size:24px">UPLOAD<i class="fa fa-upload"></i></span></label><br><br>
+  <a onclick="close_create_file_function()" style="width: 3%;" class="btn btn-danger" href="/"><i class="fa fa-close"></i></a>
+  <button style="width: 3%;" type="submit" class="btn btn-success"><i class="fa fa-check"></i></button>
+</form>
+
+
 <div id="direcory_list" class="container mt-3">
     <div class="row">
         {% for folder in directory %}
@@ -55,6 +65,13 @@
         document.getElementById("add_directory").style.display = "none";
     }
 
+    function open_create_file_function(){
+        document.getElementById("create_file").style.display = "block";
+        document.getElementById("direcory_list").style.display = "none";
+    }
+    function close_create_file_function(){
+        document.getElementById("create_file").style.display = "none";
+    }
 
     function open_settings(id){
         console.log(id)

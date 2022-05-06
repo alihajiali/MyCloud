@@ -17,6 +17,12 @@ class CreateDirectory(View):
 
 
 
+class CreateFile(View):
+    def post(self, request):
+        data = request.POST
+        print("************", data)
+
+
 class DirectoryView(View):
     def get(self, request, id):
         if request.user.is_authenticated:
