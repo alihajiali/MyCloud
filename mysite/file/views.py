@@ -2,7 +2,9 @@ from msilib.schema import Directory
 from unicodedata import category
 from django.shortcuts import redirect, render
 from django.views import View
+from django.contrib import messages
 from .models import *
+
 
 class CreateDirectory(View):
     def post(self, request):
@@ -19,8 +21,24 @@ class CreateDirectory(View):
 
 class CreateFile(View):
     def post(self, request):
-        data = request.POST
-        print("************", data)
+        data = request.FILES.getlist('file')
+        directory_id = request.POST["directory_id"]
+        
+        if directory_id == '0':
+            messages.warning(request, 'خطا ! در صفحه اصلی نمیتوانید فایلی آپلود کنید')
+            return redirect("account:home")
+
+        directory = DirectoryModel.objects.get(id=directory_id)
+        for file in data:
+            with open(f'./file_size/{str(file)}', 'wb+')as f:
+                f.write(file.read())
+            size = os.path.getsize(f'./file_size/{str(file)}')
+            os.remove(f'./file_size/{str(file)}')
+            directory.size += size
+            directory.save()
+            File.objects.create(user=request.user, file=file, name=str(file), directory=directory, size=size)
+        return redirect("account:home")
+
 
 
 class DirectoryView(View):
@@ -28,7 +46,8 @@ class DirectoryView(View):
         if request.user.is_authenticated:
             user = User.objects.get(username=request.user)
             directory = DirectoryModel.objects.filter(user=user).filter(parent=id)
-            return render(request, "file/main.html", context={"user": request.user, "directory_id": id, "directory":directory})
+            files = File.objects.filter(user=user).filter(directory=id)
+            return render(request, "file/main.html", context={"user": request.user, "directory_id": id, "directory":directory, "files":files})
 
 
 

@@ -4,22 +4,37 @@
 {% block content %}
 
 
+{% if messages %}
+<ul class="messages">
+  <div class="alert alert-danger" role="alert">
+    {% for message in messages %}
+    <li style="text-align:center; list-style-type:none;"> {{ message }} </li>
+    {% endfor %}
+  </div>
+</ul>
+{% endif %}
+
+{% if messages %}
+{% endif %}
+
+
+
 <form id="add_directory" style="text-align: center; margin-top: 10%; display: none;" action="{% url 'file:new_directory' %}" method="post">
     {% csrf_token %}
     <label for="name"></label>
     <input type="hidden", name="directory_id" value="{{ directory_id }}">
     <input style="text-align: center; width: 10%;" type="text" name="name" placeholder="name"/><br><br>
-    <a onclick="close_add_directory_function()" style="width: 3%;" class="btn btn-danger" href="/"><i class="fa fa-close"></i></a>
+    <a onclick="close_add_directory_function()" style="width: 3%;" class="btn btn-danger" href="#"><i class="fa fa-close"></i></a>
     <button style="width: 3%;" type="submit" class="btn btn-success"><i class="fa fa-check"></i></button>
 </form>
 
 
-<form id="create_file" style="text-align: center; margin-top: 10%; display: none;" action="{% url 'file:create_file' %}" method="post">
+<form id="create_file" enctype="multipart/form-data" style="text-align: center; margin-top: 10%; display: none;" action="{% url 'file:create_file' %}" method="post">
   {% csrf_token %}
   <input type="hidden", name="directory_id" value="{{ directory_id }}">
   <input type="file" name="file" id="file" multiple style="display:none;"/>
   <label for="file"><span class="btn btn-secondary" style="font-size:24px">UPLOAD<i class="fa fa-upload"></i></span></label><br><br>
-  <a onclick="close_create_file_function()" style="width: 3%;" class="btn btn-danger" href="/"><i class="fa fa-close"></i></a>
+  <a onclick="close_create_file_function()" style="width: 3%;" class="btn btn-danger" href="#"><i class="fa fa-close"></i></a>
   <button style="width: 3%;" type="submit" class="btn btn-success"><i class="fa fa-check"></i></button>
 </form>
 
@@ -51,6 +66,47 @@
   </div>
 
 
+{% if directory|length != 0 and files|length != 0 %}
+<hr>
+{% endif %}
+
+
+
+{% if files|length > 0 %}
+<table id="files" class="table">
+  <thead>
+    <tr>
+      <th scope="col">name</th>
+      <th scope="col"></th>
+      <th scope="col">size</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for file in files %}
+      <tr>
+        <th scope="row"><span style="font-size:10px; margin: 1% 3%;"><a href="{{ file.file.url }}">{{ file.name|truncatechars:100 }}</a></span></th>
+        {% if '.jpg' in file.name %}
+        <th scope="row"><img style="width: 40px; height: 40px;" src=" {{ file.file.url }} " alt="image"></th>
+        {% elif '.mp4' in file.name %}
+        <th scope="row"><i class="material-icons" style="font-size:36px">ondemand_video</i></th>
+        {% else %}
+        <th scope="row"><i class="fa fa-files-o" style="font-size:36px;"></i></th>
+        {% endif %}
+        <th scope="row"><span style="font-size:10px; margin: 1% 3%;">{{ file.size }}</span></th>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+
+
+  
+
+
+
+
+
 {% endblock %}
 
 
@@ -60,17 +116,27 @@
     function open_add_directory_function(){
         document.getElementById("add_directory").style.display = "block";
         document.getElementById("direcory_list").style.display = "none";
+        document.getElementById("create_file").style.display = "none";
+        document.getElementById("files").style.display = "none";
     }
     function close_add_directory_function(){
-        document.getElementById("add_directory").style.display = "none";
+      window.location.reload();
+        // document.getElementById("add_directory").style.display = "none";
+        // document.getElementById("direcory_list").style.display = "block";
+        // document.getElementById("files").style.display = "block";
     }
 
     function open_create_file_function(){
         document.getElementById("create_file").style.display = "block";
         document.getElementById("direcory_list").style.display = "none";
+        document.getElementById("add_directory").style.display = "none";
+        document.getElementById("files").style.display = "none";
     }
     function close_create_file_function(){
-        document.getElementById("create_file").style.display = "none";
+      window.location.reload();
+        // document.getElementById("create_file").style.display = "none";
+        // document.getElementById("direcory_list").style.display = "block";
+        // document.getElementById("files").style.display = "block";
     }
 
     function open_settings(id){

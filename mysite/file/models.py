@@ -1,5 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+import os
+
+def user_directory_path(instance, filename):
+    return f'user_{instance.user.username}/{filename}'
+
+def file_size(file):
+    print("*********", os.path.getsize(file))
 
 class DirectoryModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -15,7 +22,8 @@ class File(models.Model):
     name = models.CharField(max_length=280, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     directory = models.ForeignKey(DirectoryModel, on_delete=models.CASCADE, null=True, blank=True)
-    file = models.FileField(upload_to=f"file/")
+    file = models.FileField(upload_to=user_directory_path)
+    size = models.IntegerField()
 
     def __str__(self):
         return self.name
