@@ -1,12 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-import os
 
 def user_directory_path(instance, filename):
     return f'user_{instance.user.username}/{filename}'
-
-def file_size(file):
-    print("*********", os.path.getsize(file))
 
 class DirectoryModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
